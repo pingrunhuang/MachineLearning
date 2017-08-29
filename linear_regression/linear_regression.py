@@ -5,6 +5,7 @@ import numpy as np
 import sympy
 from sklearn.model_selection import train_test_split
 
+
 '''
  CRIM     per capita crime rate by town
  ZN       proportion of residential land zoned for lots over 25,000 sq.ft.
@@ -20,6 +21,9 @@ from sklearn.model_selection import train_test_split
  B        1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town
  LSTAT    % lower status of the population
  MEDV     Median value of owner-occupied homes in $1000's
+
+ Notice this script is implementing multiple variables linear regression
+ So we will get n theta eventually
 '''
 
 df = pd.read_pickle('dataset/housing_dataset.pickle')
@@ -27,15 +31,20 @@ df = pd.read_pickle('dataset/housing_dataset.pickle')
 test_ratio = 0.3
 train_dataset, test_dataset = train_test_split(df, test_size=test_ratio)
 
+# it will converge faster if we subscribe the average value then divide the range of each column
+# this is the key step for convergence
 trainX = train_dataset.iloc[:,:13]
-trainY = train_dataset.iloc[:,13] * 1000
+trainX = (trainX-trainX.mean()).divide(trainX.max()-trainX.min())
+trainY = train_dataset.iloc[:,13]
+
 testX = test_dataset.iloc[:,:13]
-testY = test_dataset.iloc[:,13] * 1000
+testY = test_dataset.iloc[:,13]
 MSE = 10
 theta0 = np.random.rand(1)
 theta1 = np.random.rand(trainX.iloc[0].count())
 count = 0
 alpha = 0.001
+
 
 while MSE > 0.5:
     # h(x) = theta0 + theta1 * x

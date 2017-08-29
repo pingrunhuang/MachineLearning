@@ -18,3 +18,11 @@ theta1=temp_theta1
 
 * different kind of gradient descent:
   * Batch gradient descent:
+
+
+# Feature scaling
+* Feature scaling is divide the a column with the largest value of the inside that column (v / max(column)), this will shorten the time to find the global optimization
+* feature should not too large or too small, ideally scale to 2
+* normalizing the value with (x[i] - mean(x)) / (max(x) - min(x)) before hand (recommended by Andrew)
+* plot cost function in action.
+* alpha too small: might converge very slow; alpha too large: might not converge
