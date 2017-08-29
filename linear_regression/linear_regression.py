@@ -37,25 +37,6 @@ theta1 = np.random.rand(trainX.iloc[0].count())
 count = 0
 alpha = 0.001
 
-# y_estimate = trainX.dot(theta1.transpose()) + theta0
-# print(y_estimate)
-# # update simultaneously
-# # this is equivilant to theta0 - alpha * 1/m * sum(h(x(i)) - y(i))
-# temp_theta0 = theta0 - alpha * np.sum(y_estimate - trainY) / trainY.count()
-# # this is equivilant to theta1 - alpha * 1/m * sum((h(x(i)) - y(i)) * x(i))
-# # I use * here instead of .dot because each column is multiplying the same value which is the corresponding h(x) - y
-# temp_theta1 = theta1 - alpha * ((y_estimate - trainY) * trainX.transpose()).sum(axis=1)/trainY.count()
-# theta0 = temp_theta0
-# theta1 = temp_theta1
-# # update MSE: 1/2 * 1/m * sum(square(h(x(i)) - y(i)))
-# MSE = np.sum(np.square(theta0 + trainX.dot(theta1)-trainY)) / ( 2 * trainY.count())
-# print('h(x):' + str(theta0 + trainX.dot(theta1)))
-# print('y:' + str(trainY))
-# print('MSE:' + str(MSE))
-
-
-
-
 while MSE > 0.5:
     # h(x) = theta0 + theta1 * x
     y_estimate = trainX.dot(theta1.transpose()) + theta0
@@ -64,10 +45,12 @@ while MSE > 0.5:
     temp_theta0 = theta0 - alpha * np.sum(y_estimate - trainY) / trainY.count()
     # this is equivilant to theta1 - alpha * 1/m * sum((h(x(i)) - y(i)) * x(i))
     # I use * here instead of .dot because each column is multiplying the same value which is the corresponding h(x) - y
+    # I am pretty sure this function goes the same as the definition from coursera class taught by Andrew, but somehow it get negative
     temp_theta1 = theta1 - alpha * ((y_estimate - trainY) * trainX.transpose()).sum(axis=1)/trainY.count()
     theta0 = temp_theta0
     theta1 = temp_theta1
     # update MSE: 1/2 * 1/m * sum(square(h(x(i)) - y(i)))
+    # since the theta1 is negative, the MSE is getting larger and larger why?
     MSE = np.sum(np.square(theta0 + trainX.dot(theta1)-trainY)) / ( 2 * trainY.count())
     print('How many iteration: ' + str(count))
     # print('h(x):' + str(theta0 + trainX.dot(theta1)))
