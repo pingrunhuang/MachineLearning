@@ -36,6 +36,8 @@ train_dataset, test_dataset = train_test_split(df, test_size=test_ratio)
 trainX = train_dataset.iloc[:,:13]
 trainX = (trainX-trainX.mean()).divide(trainX.max()-trainX.min())
 trainY = train_dataset.iloc[:,13]
+# question: if we need to normalize the y?
+# trainY = (trainY-trainY.mean()).divide(trainY.max()-trainY.min())
 
 testX = test_dataset.iloc[:,:13]
 testY = test_dataset.iloc[:,13]
@@ -43,10 +45,10 @@ MSE = 10
 theta0 = np.random.rand(1)
 theta1 = np.random.rand(trainX.iloc[0].count())
 count = 0
-alpha = 0.001
+alpha = 0.03
 
 
-while MSE > 0.5:
+while MSE > 0.05:
     # h(x) = theta0 + theta1 * x
     y_estimate = trainX.dot(theta1.transpose()) + theta0
     # update simultaneously
@@ -61,8 +63,13 @@ while MSE > 0.5:
     # update MSE: 1/2 * 1/m * sum(square(h(x(i)) - y(i)))
     # since the theta1 is negative, the MSE is getting larger and larger why?
     MSE = np.sum(np.square(theta0 + trainX.dot(theta1)-trainY)) / ( 2 * trainY.count())
-    print('How many iteration: ' + str(count))
+    print('Current iteration: ' + str(count))
     # print('h(x):' + str(theta0 + trainX.dot(theta1)))
     # print('y:' + str(trainY))
     print(MSE)
     count = count + 1
+
+# validation
+# I am not sure if I am doing it right, but the tesing error is about 25250 which is pretty large
+MSE = np.sum(np.square(theta0 + testX.dot(theta1)-testY)) / ( 2 * testY.count())
+print("The testing MSE is: " + str(MSE))
